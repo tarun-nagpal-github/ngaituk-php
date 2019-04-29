@@ -1,0 +1,340 @@
+!DOCTYPE html><html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="theme-color" content="#065283"/>
+    <meta name="description" content="Horticulture software solution for growers, ABCgrower collects and reports on-orchard labour, tracks inventory and more."/><meta name="keywords" content="labour activities harvest,analysis,labour,smartphone,seasonal workers,horticulture,orchard solutions,farm,bin management,despatch,scanning,grower,quality,timesheets,labour costs,block cost,on-orchard management,pickers,pruning,thinning,workers,productivity,payroll,activity,top up,paid break,cloud based,piece rate,kpi,paying workers,block costs"/>
+    <title>ABCgrower</title>
+    <link rel="shortcut icon" type="image/png" href="core/img/favicon.ico"/>
+    <link rel="stylesheet" href="core/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="core/css/main.min.css"/>
+    <link rel="stylesheet" href="core/css/trumbowyg.min.css"/>
+    <link rel="manifest" href="manifest.json"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="core/img/icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="96x96" href="core/img/icon-96x96.png"/>
+    <link rel="apple-touch-icon" sizes="128x128" href="core/img/icon-128x128.png"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="core/img/icon-144x144.png"/>
+    <link rel="apple-touch-icon" sizes="152x152" href="core/img/icon-152x152.png"/>
+    <link rel="apple-touch-icon" sizes="192x192" href="core/img/icon-192x192.png"/>
+    <link rel="apple-touch-icon" sizes="384x384" href="core/img/icon-384x384.png"/>
+    <link rel="apple-touch-icon" sizes="512x512" href="core/img/icon-512x512.png"/>
+</head>
+<body ng-app="abc.grower" ng-cloak>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-24">
+                <div class="row" ng-controller="ApplicationController">
+                    <div class="applicationLoadingOverlay" ng-show="LoadingApp">
+                        <div class="applicationLoadingContent text-center">
+                            <div class="loader">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-24 nav-div" ng-show="IsMenuVisible">
+                        <div class="row">
+                            <nav class="navbar navbar-default navbar-fixed-top">
+                                <div class="container-fluid">
+                                    <div class="navbar-header">
+                                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#MainNav" aria-expanded="false">
+                                      <span class="sr-only">Toggle navigation</span>
+                                      <span class="icon-bar"></span>
+                                      <span class="icon-bar"></span>
+                                      <span class="icon-bar"></span>
+                                  </button>
+                                   <a class="navbar-brand" href="#!/home">ABCgrower</a>
+                               </div>
+                               <div class="collapse navbar-collapse" id="MainNav">
+                                <ul class="nav navbar-nav">
+                                    <li class="dropdown" ng-repeat="item in Menu | orderBy: 'SeqNo'">
+                                     <a ng-show="item.SubMenu.length" href="%" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{item.MenuText}}<span class="caret"></span></a> 
+                                     <a ng-hide="item.SubMenu.length" href="#!{{item.Href}}" class="dropdown-toggle" data-toggle="collapse" data-target="#MainNav.in" role="button" aria-haspopup="true" aria-expanded="false">{{item.MenuText}}</a>
+                                     <ul class="dropdown-menu" ng-show="item.SubMenu.length">
+                                        <li ng-repeat="subItem in item.SubMenu | orderBy: ['GroupCode','SeqNo']" role="separator" ng-class="{divider:subItem.SeparatorFlag}"> 
+                                            <a data-toggle="collapse" data-target="#MainNav.in" ng-show="!subItem.SeparatorFlag" href="{{subItem.Href}}">{{subItem.MenuText}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <div ng-controller="CurrentUserController">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="icon-list">
+                                        <a href="#!/help" class="navbar-link" title="Help">
+                                            <span class="glyphicon glyphicon-question-sign"></span>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown icon-list"> <a class="navbar-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell notification-link">
+                                        <span ng-show="userNotifications.HasUnreadNotifications" class="badge">
+                                        {{userNotifications.NumberOfUnreadNotifications}}
+                                    </span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu col-xs-24" style="min-width:300px;background-color:#fff;">
+                                    <li>
+                                        <a class="notification-clear" data-toggle="collapse" data-target="#MainNav.in" ng-click="MarkAllNotificationsAsRead()">Mark all as read</a>
+                                    </li>
+                                    <li ng-repeat="notification in userNotifications.Notifications | orderBy:'NotificationDateTime':true">
+                                        <div class="notification-container " data-toggle="collapse" data-target="#MainNav.in" ng-class="{'unread': !notification.ReadFlag}" ng-click="NotificationClicked(notification.UserNotificationID, notification.NotificationClickLink)">
+                                            <span ng-bind-html="notification.NotificationContent"></span>
+                                            <p style="margin-bottom: 0;">
+                                                <span style="font-size:10px;">{{notification.NotificationDateTime | UTCToNow}}</span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown icon-list">
+                                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-user">
+                                        
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a data-toggle="collapse" data-target="#MainNav.in" href="#!/account">{{User.AccountName}}</a></li>
+                                    <li><a data-toggle="collapse" data-target="#MainNav.in" href="#" ng-click="ChangeSeason()">{{User.OrganisationName}} <span ng-show="User.UserSeasonID">- Season: {{User.UserSeason}}</span></a></li>
+                                    <li role="separator" class="divider"></li><li><a data-toggle="collapse" data-target="#MainNav.in" href="#!/downloadData">Download</a></li><li role="separator" class="divider"></li>
+                                    <li><a data-toggle="collapse" data-target="#MainNav.in" href="#!/releaseNote">Release Notes</a></li>
+                                    <li><a data-toggle="collapse" data-target="#MainNav.in" href="#!/contact">Contact Us</a></li>
+                                    <li><a data-toggle="collapse" data-target="#MainNav.in" target="_blank" href="{{url}}utility/TermsOfUse">Terms of Use</a></li>
+                                    <li><a data-toggle="collapse" data-target="#MainNav.in" target="_blank" href="{{url}}utility/Privacy">Privacy</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#" ng-click="Logout()">Log Out</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-24 breadcrumb-container">
+                    <ul class="breadcrumb">
+                        <li ng-cloak ng-repeat="breadcrumb in BreadCrumbFactory.getAll()">
+                            <ng-switch on="$last"> <span ng-switch-when="true">{{breadcrumb.name}}</span>
+                             <span ng-switch-default><a href="{{breadcrumb.path}}">{{breadcrumb.name}}</a></span>
+                         </ng-switch>
+                     </li>
+                 </ul>
+                 <div class="breadcrumb offline-icon" ng-hide="online"> <span><img src="core/img/offline_light.png"/>Offline</span>
+                 </div>
+             </div>
+         </div>
+     </nav>
+ </div>
+</div>
+</div>
+<div class="row content-wrapper">
+    <div class="col-xs-24 col-sm-20 col-md-21 content-div">
+        <div ng-view>
+            
+        </div>
+    </div>
+    <div class="hidden-xs col-xs-24 col-sm-4 col-md-3 button-bar affix" ng-cloak>
+        <div ng-controller="ApplicationController">
+            <div class="btn-bar-div" ng-repeat="button in ButtonBarFactory.getButtons()" ng-switch="button.ButtonBase">
+                <div ng-switch-when="dropdown" class="btn-group dropdown-btn"> 
+                    <button type="button" class="{{button.ButtonType}} btn-bar-btn split" ng-click="button.ButtonEvent()" ng-disabled="button.Disabled() || button.Permission().disabled" title="{{button.Permission().tooltip}}">
+                        <span class="{{button.GlyphClass}}"></span> 
+                    {{button.ButtonText}}
+                </button> 
+                <button type="button" class="{{button.ButtonType}} btn-bar-btn dropdown-toggle" ng-disabled="button.Disabled() || button.Permission().disabled" data-toggle="dropdown"><span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu btn-bar-dropdown">
+                    <li class="" ng-repeat="dropdown in button.DropdownButtonEvents">
+                        <a ng-click="dropdown.ButtonEvent()" ng-disabled="dropdown.Disabled()">{{dropdown.ButtonText}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div ng-switch-when="dropdownonly" class="btn-group dropdown-btn"> 
+                <button type="button" class="{{button.ButtonType}} btn-bar-btn dropdown-btn" data-toggle="dropdown">
+                    <span class="{{button.GlyphClass}}"></span>
+                     {{button.ButtonText}}
+                     <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu btn-bar-dropdown">
+                    <li class="" ng-repeat="dropdown in button.DropdownButtonEvents">
+                        <a ng-click="dropdown.ButtonEvent()" ng-disabled="dropdown.Disabled()">{{dropdown.ButtonText}}</a>
+                    </li>
+                </ul>
+            </div> 
+            <button ng-switch-default class="{{button.ButtonType}} btn-bar-btn" ng-disabled="button.Disabled() || button.Permission().disabled" title="{{button.Permission().tooltip}}" ng-click="button.ButtonEvent()" data-loading-text="{{button.DataLoadingText}}">
+                <span class="{{button.GlyphClass}}"></span>
+                 {{button.ButtonText}}
+             </button>
+         </div>
+     </div>
+ </div>
+</div>
+<div class="row" ng-controller="ApplicationController">
+    <div class="visible-xs floating-menu-button affix clickable" ng-if="ButtonBarFactory.buttonsExist()" ng-class="{'fab-clicked': showButtonBar}" ng-click="showHideBB()"> 
+        <img src="core/img/ic_arrow_drop_down_white_36dp_2x.png"/></div>
+        <div class="visible-xs col-xs-24">
+            <div class="row">
+                <div class="col-xs-24 button-bar xs affix" ng-class="{'fab-clicked': showButtonBar}">
+                    <div class="button-bar-buttons-xs">
+                        <div class="btn-bar-div" ng-repeat="button in ButtonBarFactory.getButtons()" ng-switch="button.ButtonBase">
+                            <div ng-switch-when="dropdown" class="btn-group dropdown-btn">
+                             <button type="button" class="{{button.ButtonType}} btn-bar-btn split noPreventDefault" ng-click="button.ButtonEvent()" ng-disabled="button.Disabled()"><span class="{{button.GlyphClass}}"></span>
+                              {{button.ButtonText}}</button>
+                               <button type="button" class="{{button.ButtonType}} btn-bar-btn dropdown-toggle noPreventDefault" data-toggle="dropdown">
+                                <span class="caret"></span>
+                                 <span class="sr-only">Toggle Dropdown</span>
+                             </button>
+                             <ul class="dropdown-menu btn-bar-dropdown">
+                                <li class="" ng-repeat="dropdown in button.DropdownButtonEvents">
+                                    <a ng-click="dropdown.ButtonEvent()" ng-disabled="dropdown.Disabled()">{{dropdown.ButtonText}}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div ng-switch-when="dropdownonly" class="btn-group dropdown-btn"> 
+                            <button type="button" class="{{button.ButtonType}} btn-bar-btn dropdown-btn noPreventDefault" data-toggle="dropdown">
+                                <span class="{{button.GlyphClass}}"></span>
+                                 {{button.ButtonText}}
+                                 <span class="caret"></span> 
+                                 <span class="sr-only">Toggle Dropdown</span>
+                             </button>
+                             <ul class="dropdown-menu btn-bar-dropdown">
+                                <li class="" ng-repeat="dropdown in button.DropdownButtonEvents">
+                                    <a ng-click="dropdown.ButtonEvent()" ng-disabled="dropdown.Disabled()">{{dropdown.ButtonText}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                         <button ng-switch-default class="{{button.ButtonType}} btn-bar-btn noPreventDefault" ng-disabled="button.Disabled() || button.Permission().disabled" title="{{button.Permission().tooltip}}" ng-click="button.ButtonEvent();hideButtonBar()" data-loading-text="{{button.DataLoadingText}}">
+                            <span class="{{button.GlyphClass}}"></span>
+                             {{button.ButtonText}}
+                         </button>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+</div>
+</div>
+</div>
+<div class="upload-sync" ng-controller="ApplicationController" ng-show="online && dataToSync" ng-class="{'sync-success': syncSuccess}">
+    <div> <span class="sync-message">{{syncMessage}}</span> 
+        <button type="button" class="btn btn-primary sync-button" ng-hide="syncingData || syncSuccess" ng-click="SyncOfflineData()">Sync</button> 
+        <img src="core/img/MiniSpinner.gif" class="sync-spinner" ng-show="syncingData"/>
+    </div>
+</div>
+<div class="alertDiv" ng-cloak>
+    <div uib-alert ng-repeat="alert in alerts" style="margin:10px;" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)" dismiss-on-timeout="2000"> {{ alert.message }}
+    </div>
+</div>
+
+<div id="scanner" style="display:none;" ng-controller="ScannerController">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid"> 
+            <button type="button" class="btn btn-link navbar-btn" ng-click="SwitchCamera()">
+                <span class="glyphicon glyphicon-retweet"></span>
+            </button> 
+            <button type="button" class="btn btn-link navbar-btn" ng-click="SetDefaultCamera()">Set as Default Camera</button> 
+            <span style="color:white">
+                <strong>{{message}}</strong>
+            </span> 
+
+            <button type="button" class="btn btn-link navbar-btn pull-right" ng-click="Close()">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+
+            <div class="clearfix"></div>
+        </div>
+    </nav>
+    <video id="video"></video>
+</div>
+<div id="report" ng-show="ShowReport" ng-controller="ReportController">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid"> 
+            <button type="button" class="btn btn-link navbar-btn pull-right" ng-click="Close()">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+
+            <div class="clearfix"></div>
+        </div>
+    </nav>
+
+    <div style="margin:auto;" class="loader"></div>
+    <iframe id="reportiframe" ng-if="pdfContent" style="position: fixed; top: 50px; width: 100%; height: 95%; border: none;z-index: 999999" ng-src="{{pdfContent}}"></iframe>
+</div>
+<script type="text/javascript" src="core/third-party-assets.js"></script>
+<script type="text/javascript" src="core/abc-grower.js"></script>
+<script type="text/javascript" src="core/abc-assets.js"></script>
+<script type="text/javascript" src="modules/login/login.js"></script>
+<script type="text/javascript" src="modules/home/home.js"></script>
+<script type="text/javascript" src="modules/account/account.js"></script>
+<script type="text/javascript" src="modules/despatch-confirm/despatch-confirm.js"></script>
+<script type="text/javascript" src="modules/offline/offline.js"></script>
+<script type="text/ng-template" id="ChangeSeason.template/.html">
+        <div class="modal-header modal-header-info">
+            <h3 class="modal-title">Change Season</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-24">
+                    <form class="col-xs-24 form-horizontal">
+                        <div class="row form-row">
+                            <label class="col-xs-24 col-sm-8 control-label" for="SeasonID">Season:</label>
+                            <div class="col-xs-24 col-sm-16">
+                                <div class="col-xs-24 col-sm-16 col-md-16">
+                                    <select name="SeasonID" alt="Season" ng-options="val.ValueMember as val.DisplayMember for val in Seasons | orderBy:'DisplayMember'" class="form-control input-md" ng-model="SeasonID" required></select>
+                                    <p class="text-danger">{{errorMessage}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <label class="col-xs-24 col-sm-8 control-label" for="SeasonID">User Season:</label>
+                            <label class="col-xs-24 col-sm-16" style="margin-bottom:0;padding-top:7px;">{{StartDate | date:"dd/MM/yyyy"}} to {{EndDate | date:"dd/MM/yyyy"}}</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success" data-ng-click="ok();">OK</button>
+            <button type="button" class="btn btn-link" data-ng-click="close();">Cancel</button>
+        </div>
+    </script><script type="text/ng-template" id="PrintCards.template/.html">
+        <div class="modal-header modal-header-info">
+            <h3 class="modal-title">Print Worker Cards</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-24">
+                    <form class="col-xs-24 form-horizontal">
+                        <div class="row form-row">
+                            <label class="col-xs-24 col-sm-8 control-label" for="NoOfCards">No Cards to Print:</label>
+                            <div class="col-xs-24 col-sm-16">
+                                <input type="number" placeholder="" autocomplete="off" name="NoOfCards" class="form-control input-md" ng-model="NoOfCards" required alt="No of worker cards to print" focus-me="{{true}}" />
+                                <p class="text-danger">{{errorMessage}}</p>
+                            </div>
+                        </div>
+                        <div class="row form-row" ng-show="orgSettings.WorkerCardPrintServiceFlag">
+                            <label class="col-xs-24 col-sm-8 control-label" for="Label">Printer:</label>
+                            <div class="col-xs-24 col-sm-16">
+                                <select name="Printer" alt="Printer" ng-options="val.ValueMember as val.DisplayMember for val in PrinterComboList | filterActive" class="form-control input-md" ng-model="PrinterID"><option value=""></option></select>
+                                <p class="text-danger">{{printerErrorMessage}}</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success" data-ng-click="ok();">OK</button>
+            <button type="button" class="btn btn-link" data-ng-click="close();">Cancel</button>
+        </div>
+    </script><script type="text/javascript">
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('service-worker.js').then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script></body></html>

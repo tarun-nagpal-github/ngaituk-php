@@ -1,0 +1,12 @@
+
+<label>Another Maturity</label>
+<input class="w3-input" type="text" placeholder="Maturity">
+
+<input class="w3-input" type="Number" placeholder="No of Bins by Maturity">
+	
+
+                   
+                   
+                   
+                   
+                   
