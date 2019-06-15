@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+
 $db_host = "localhost";
 $db_user = "root";
 $db_pass = "";
