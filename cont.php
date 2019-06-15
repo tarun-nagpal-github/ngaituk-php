@@ -74,54 +74,54 @@
 
 
 
-     //for workers
-     $sql = "CREATE TABLE $tname (
-         id INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-         e_id VARCHAR(20) NOT NULL,
-         f_name VARCHAR(50) NOT NULL,
-         l_name VARCHAR(50) NOT NULL,
-         v_type VARCHAR(20) NOT NULL,
-         v_exp DATE NOT NULL,
-         d_o_b DATE NOT NULL)";
+    //  //for workers
+    //  $sql = "CREATE TABLE $tname (
+    //      id INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    //      e_id VARCHAR(20) NOT NULL,
+    //      f_name VARCHAR(50) NOT NULL,
+    //      l_name VARCHAR(50) NOT NULL,
+    //      v_type VARCHAR(20) NOT NULL,
+    //      v_exp DATE NOT NULL,
+    //      d_o_b DATE NOT NULL)";
 
-         if($db->query($sql)===TRUE)
-         {
-           echo "table created";
-         }
+    //      if($db->query($sql)===TRUE)
+    //      {
+    //        echo "table created";
+    //      }
 
-     //for work done
-     $sql1 = "CREATE TABLE $wrktb (
-         id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-         e_id VARCHAR(20) NOT NULL,
-         t_date DATE,
-         crw_no INT(10) NOT NULL,
-         f_name VARCHAR(50) NOT NULL,
-         l_name VARCHAR(50) NOT NULL,
-         s_time TIME(6) NOT NULL,
-         f_time TIME(6) NOT NULL,
-         n_lunch VARCHAR(20) NOT NULL,
-         j_code VARCHAR(20) NOT NULL,
-         t_hrs float NOT NULL)";
+    //  //for work done
+    //  $sql1 = "CREATE TABLE $wrktb (
+    //      id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    //      e_id VARCHAR(20) NOT NULL,
+    //      t_date DATE,
+    //      crw_no INT(10) NOT NULL,
+    //      f_name VARCHAR(50) NOT NULL,
+    //      l_name VARCHAR(50) NOT NULL,
+    //      s_time TIME(6) NOT NULL,
+    //      f_time TIME(6) NOT NULL,
+    //      n_lunch VARCHAR(20) NOT NULL,
+    //      j_code VARCHAR(20) NOT NULL,
+    //      t_hrs float NOT NULL)";
          
 
-         if($db->query($sql1)===TRUE)
-         {
-           echo "table created";
-         }
+    //      if($db->query($sql1)===TRUE)
+    //      {
+    //        echo "table created";
+    //      }
 
-      // for harvest  
-      $sql2 = "CREATE TABLE $hvwtb (
-         id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    //   // for harvest  
+    //   $sql2 = "CREATE TABLE $hvwtb (
+    //      id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
          
-         t_date DATE NOT NULL,
-         crw_no INT(10) NOT NULL,
-         n_o_b INT(10) NOT NULL)";
+    //      t_date DATE NOT NULL,
+    //      crw_no INT(10) NOT NULL,
+    //      n_o_b INT(10) NOT NULL)";
          
 
-         if($db->query($sql2)===TRUE)
-         {
-           echo "table created";
-         }
+    //      if($db->query($sql2)===TRUE)
+    //      {
+    //        echo "table created";
+    //      }
 
 
      //echo "<meta http-equiv=\"refresh\" content=\"0;URL=cont.php\">";
