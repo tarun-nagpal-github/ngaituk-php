@@ -10,9 +10,13 @@ $data = json_decode($json);
                VALUES ('$data->firstName','$data->lastName','$data->contractor','$data->employeeId',
                       '$data->visaType','$data->visaExpiry','$data->dateOfBirth')";
 
-                      
+            $myArray = array();          
         if($db->query($sql)===TRUE)
         {
           echo "data inserted" ;
           //echo $wrknm;
+          $myArray[] = "saved";
         }
+
+        
+        echo json_encode($myArray); 
