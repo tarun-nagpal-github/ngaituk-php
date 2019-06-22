@@ -1,7 +1,14 @@
 <?php
   include "../config.php"; 
+  $json = file_get_contents('php://input');
+$data = json_decode($json);
 
-$query = "SELECT * FROM `workers`"; 
+// if(!empty($data->id)){
+// 	$query = "SELECT * FROM `workers` WHERE id=$data->id";   
+// } else {
+    $query = "SELECT * FROM `workers`";     
+// }
+
 
 $myArray = array();
 if ($result = $db->query($query)) {
