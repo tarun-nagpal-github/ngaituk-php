@@ -22,10 +22,5 @@ $db = new mysqli("127.0.0.1", "root", "", "ngaituk", 3306);
 if ($db->connect_errno) {
     echo "Failed to connect to MySQL: (" . $db->connect_errno . ") " . $db->connect_error;
 }
-
-
 date_default_timezone_set('NZ');
-
-
-
 ?>
