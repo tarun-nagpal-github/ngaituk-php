@@ -1,4 +1,17 @@
 <?php
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+
+
+
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, X-Requested-With");
+
 $db_host = "localhost";
 $db_user = "root";
 $db_pass = "";
@@ -15,10 +28,5 @@ $db = new mysqli("127.0.0.1", "root", "", "ngaituk", 3306);
 if ($db->connect_errno) {
     echo "Failed to connect to MySQL: (" . $db->connect_errno . ") " . $db->connect_error;
 }
-
-
 date_default_timezone_set('NZ');
-
-
-
 ?>
