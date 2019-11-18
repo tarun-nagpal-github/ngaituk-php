@@ -1,13 +1,19 @@
 <?php
-  include "../config.php"; 
-  $json = file_get_contents('php://input');
+include "../config.php"; 
+$json = file_get_contents('php://input');
 $data = json_decode($json);
 
-// if(!empty($data->id)){
-// 	$query = "SELECT * FROM `workers` WHERE id=$data->id";   
-// } else {
+// print "DATA";
+// print_r($_REQUEST[id]);
+// die("json");
+
+$id = $_REQUEST['id'];
+
+if(($id)){
+	$query = "SELECT * FROM `workers` WHERE id=$id";   
+} else {
     $query = "SELECT * FROM `workers`";     
-// }
+}
 
 
 $myArray = array();
