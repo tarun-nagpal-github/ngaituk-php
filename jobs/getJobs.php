@@ -1,8 +1,18 @@
 <?php
   include "../config.php"; 
 
-$query = "SELECT * FROM `job_code`"; 
+ 
+ $id = ($_REQUEST['id']);
 
+
+
+if(!empty($id)){
+	$query = "SELECT * FROM `job_code` WHERE id=$id";   
+} else {
+    $query = "SELECT * FROM `job_code`";     
+}
+
+ // die($query);
 $myArray = array();
 if ($result = $db->query($query)) {
 
