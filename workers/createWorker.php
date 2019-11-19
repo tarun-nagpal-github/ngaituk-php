@@ -9,20 +9,6 @@ if(
     !empty($data->visaType)
 ) 
  {
-
-<<<<<<< HEAD
-  $e_id = "";
-  $queryGet = "SELECT * FROM `workers` WHERE 1 ORDER BY id DESC LIMIT 0, 1";
-  if ($resultGet = $db->query($queryGet)) { 
-    $last_id = $resultGet->fetch_assoc()['id'];
-    $e_id = ucfirst($data->firstName[0]).ucfirst($data->lastName[0])."000".$last_id;
-  }
-
-   // die($e_id);
-
-$query = "INSERT INTO workers (f_name, l_name, contractor_id, e_id,   v_type,  v_exp, d_o_b)
-               VALUES ('$data->firstName','$data->lastName','$data->contractor','$e_id',
-=======
   // Get the last inserted ID
   $getLastIdQuery =  " SELECT MAX(id) as id FROM `workers` ";
   if ($result = $db->query($getLastIdQuery)) { 
@@ -37,7 +23,6 @@ $query = "INSERT INTO workers (f_name, l_name, contractor_id, e_id,   v_type,  v
 
 $query = "INSERT INTO workers (f_name, l_name, contractor_id, e_id,   v_type,  v_exp, d_o_b)
                VALUES ('$data->firstName','$data->lastName','$data->contractor','$e_id_new',
->>>>>>> b885f1d6c4d9f7c06dadfd0b2ebaf0e54063afc9
                       '$data->visaType','$data->visaExpiry','$data->dateOfBirth')";
 $myArray = array(); 
 // print_r($query); die();
